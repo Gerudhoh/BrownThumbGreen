@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="shortcut icon" href="#">
+		<title>CIS*3210 Lab 4</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="/css/cover.css" rel="stylesheet">
+		<link href="/css/custom.css" rel="stylesheet">
+	</head>
+
+	<body>
+
+		<div class="site-wrapper">
+			<div class="site-wrapper-inner">
+				<div class="cover-container">
+
+					<div class="inner cover">
+						<h1 class="cover-heading">CIS*3210 Lab 4</h1>
+
+						<div id="moviesDiv">
+						<p class="lead">Click the buttons below to edit a list of movies</p>
+
+						<button type="button" class="btn btn-info" id="get-button">GET</button>
+
+						<button type="button" class="btn btn-info" id="post-button">POST</button>
+						
+						<button type="button" class="btn btn-info" id="put-button">PUT</button>
+
+						<button type="button" class="btn btn-info" id="delete-button">DELETE</button>
+
+						<br>
+
+						<textarea id="movies" class="text-input" readonly placeholder="no movies yet :( go get them ;) '"></textarea>
+
+						</div>
+
+
+						<div id="Lab3">
+							<form ref='lab3' id='lab3'>
+							  <div class="form-group">
+									<h4>Please Log in:</h4>
+									<label for="username">Username: </label>
+									<input type="text" id="username" required>
+									<br>
+									<label for="password">Password: </label>
+									<input type="password" id="password" required>
+									<br>
+								</div>
+							<div class="form-group">
+								<input type="submit" class = "btn btn-success" value="Create User" id="POST">
+								<input type="submit" class = "btn btn-info" value="Get User" id="GET">
+								<input type="submit" class = "btn btn-warning" value="Update Password" id="PUT">
+								<input type="submit" class = "btn btn-danger" value="Delete User" id="DELETE"> 
+							</form> 
+						</div>
+
+
+							<textarea id="output" class="text-input" readonly placeholder="Output box"></textarea>
+						  </div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="/js/jquery.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/init.js"></script>
+
+		<footer class="footer">
+			<p>Author: Julia Hohenadel, 1006930</p>
+		</footer>
+	</body>
+</html>
