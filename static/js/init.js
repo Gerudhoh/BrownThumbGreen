@@ -33,7 +33,7 @@ $(document).ready(function () {
             type: 'POST', //Request type
             url: '/logout',   //The server endpoint we are connecting to
             success: function(result){
-              $("#output").html(result);
+              location.reload();
           }});
         });
 });
@@ -49,7 +49,7 @@ function login() {
        url : '/login',
        success: function(result){
          console.log(result);
-         $('#output').text(result.result).show();
+         location.reload();
          if (result.fail != null){
           $('#help').show();
          }
