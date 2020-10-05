@@ -27,27 +27,9 @@
 
 					<div class="inner cover">
 						<h1 class="cover-heading">CIS*3210 Lab 4</h1>
-
-						<div id="moviesDiv">
-						<p class="lead">Click the buttons below to edit a list of movies</p>
-
-						<button type="button" class="btn btn-info" id="get-button">GET</button>
-
-						<button type="button" class="btn btn-info" id="post-button">POST</button>
-						
-						<button type="button" class="btn btn-info" id="put-button">PUT</button>
-
-						<button type="button" class="btn btn-info" id="delete-button">DELETE</button>
-
-						<br>
-
-						<textarea id="movies" class="text-input" readonly placeholder="no movies yet :( go get them ;) '"></textarea>
-
-						</div>
-
-
-						<div id="Lab3">
-							<form ref='lab3' id='lab3'>
+						{% if not session.logged_in %}
+						<div id="loginDiv">
+							<form ref='login' id='login'>
 							  <div class="form-group">
 									<h4>Please Log in:</h4>
 									<label for="username">Username: </label>
@@ -55,18 +37,20 @@
 									<br>
 									<label for="password">Password: </label>
 									<input type="password" id="password" required>
+									<span class="help-block" class="text-danger" id="help">Password incorrect</span>
 									<br>
 								</div>
 							<div class="form-group">
-								<input type="submit" class = "btn btn-success" value="Create User" id="POST">
-								<input type="submit" class = "btn btn-info" value="Get User" id="GET">
-								<input type="submit" class = "btn btn-warning" value="Update Password" id="PUT">
-								<input type="submit" class = "btn btn-danger" value="Delete User" id="DELETE"> 
+								<input type="submit" class = "btn btn-success" value="LOGIN" id="LOGIN">
+								<input type="submit" class = "btn btn-info" value="SIGN UP" id="SIGNUP">
 							</form> 
-						</div>
-
-
+							<br>
 							<textarea id="output" class="text-input" readonly placeholder="Output box"></textarea>
+						</div>
+						{% else %}
+							<h2 class="cover-heading">Welcome, {{ session.username }}!</h2>
+							<button type="button" class="btn btn-danger" id="logout">Logout</button>
+						{% endif %}
 						  </div>
 
 					</div>

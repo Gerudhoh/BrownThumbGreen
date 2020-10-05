@@ -1,8 +1,7 @@
 $(document).ready(function () {
         console.log("Julia Hohenadel 1006930");
 
-        $('#moviesDiv').hide();
-        $('#Lab3').hide();
+        $('#help').hide();
 
         $.ajax({
           type: 'get',         //Request type
@@ -18,64 +17,54 @@ $(document).ready(function () {
           }
       });
 
-        $('#lab3').on('submit', function(event) {
-            if(event.originalEvent.submitter.id == "POST") {
-              addUser();
-            } else if (event.originalEvent.submitter.id == "GET") {
-              getUser();
-            } else if (event.originalEvent.submitter.id == "PUT") {
-              updateUser();
+        $('#login').on('submit', function(event) {
+            if(event.originalEvent.submitter.id == "SIGNUP") {
+              signup();
+            } else if (event.originalEvent.submitter.id == "LOGIN") {
+              login();
             } else {
-              deleteUser();
+              console.log("Something isn't right here :(");
             }
-          
             event.preventDefault();
          });
 
-
-        $('#get-button').click(function () {
+         $('#logout').click(function () {
           $.ajax({ 
-            type: 'GET',         //Request type
-            contentType: 'application/json',
-            url: '/movies',   //The server endpoint we are connecting to
+            type: 'POST', //Request type
+            url: '/logout',   //The server endpoint we are connecting to
             success: function(result){
-              $("#movies").html(result);
-          }});
-        });
-
-       $('#post-button').click(function () {
-        $.ajax({ 
-          type: 'POST',         //Request type
-          contentType: 'application/json',
-          url: '/movies',   //The server endpoint we are connecting to
-          success: function(result){
-            $("#movies").html(result);
-        }});
-      });
-
-        $('#put-button').click(function () {
-          $.ajax({ 
-            type: 'PUT',         //Request type
-            contentType: 'application/json',
-            url: '/movies',   //The server endpoint we are connecting to
-            success: function(result){
-              $("#movies").html(result);
-          }});
-       });
-
-        $('#delete-button').click(function () {
-          $.ajax({ 
-            type: 'DELETE',         //Request type
-            contentType: 'application/json',
-            url: '/movies',   //The server endpoint we are connecting to
-            success: function(result){
-              $("#movies").html(result);
+              $("#output").html(result);
           }});
         });
 });
 
 
-function addUser() {
+function login() {
+  $.ajax({
+    data : {
+       username : $('#username').val(),
+       password: $('#password').val(),
+           },
+       type : 'POST',
+       url : '/login',
+       success: function(result){
+         console.log(result);
+         $('#output').text(result.result).show();
+         if (result.fail != null){
+          $('#help').show();
+         }
+     },
+     fail: function(error) {
+       console.log(error); 
+     }});
+}
+
+function signup() {
+  createUser();
+  login();
+}
+
+function createUser() {
   $.ajax({
     data : {
        username : $('#username').val(),

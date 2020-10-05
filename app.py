@@ -1,43 +1,23 @@
 #!/usr/local/bin/python
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import pymysql
 pymysql.install_as_MySQLdb()
 import MySQLdb.cursors
 
 app = Flask(__name__, static_url_path='')
-#app.debug = True
-
-movies = []
+app.config.update(
+    DEBUG=True,
+    SECRET_KEY=b'h1^b3stpxy_h@9f',
+    TEMPLATE_AUTO_RELOAD=True
+)
 
 @app.route('/')
 def index(name=None):
+    if 'username' in session:
+        return render_template('index.html', name=name)
     return render_template('index.html', name=name)
-
-# # Get
-# @app.route("/movies", methods=["GET"])
-# def getMovies(name=None):
-#     json_string = json.dumps(movies)
-#     return "successfully got a list of movies: \n" + json_string
-
-# # Post
-# @app.route("/movies", methods=["POST"])
-# def postMovies(name=None):
-#     movies.extend(["Shrek", "Shrek 2", "Shrek 4", "The Lord of the Rings", "Shawshank Redemption", "Star Wars Episode 3", "Fight Club"])
-#     return "successfully created a list of movies"
-
-# # Put
-# @app.route('/movies', methods=["PUT"])
-# def putMovies(name=None):
-#     movies.append("Shrek 3")
-#     return "successfully added a movie (Shrek 3) to the list"
-
-# # # Delete
-# @app.route('/movies', methods=["DELETE"])
-# def deleteMovies(name=None):
-#     movies.clear()
-#     return "successfully deleted the list of movies"
 
 def getDB():
     db = MySQLdb.connect(
@@ -151,10 +131,10 @@ def deleteUser():
     except:
         return jsonify({'result':'error ' + sys.exc_info()[0] + " occured"})
 
-# Login
+# Create User
 @app.route("/users", methods=["POST"])
-def login():
-    print("LOGGING IN")
+def createUser():
+    print("Creating User")
     username = request.form['username']
     password = request.form['password']
     
@@ -180,3 +160,45 @@ def login():
         return jsonify({'result':'added user ' + username + ' to database'})
     except:
         return jsonify({'result':'error ' + sys.exc_info()[0] + " occured"})
+
+# Login
+@app.route("/login", methods=["POST"])
+def login():
+    print("LOGGING IN")
+    username = request.form['username']
+    password = request.form['password']
+    
+    try:
+        db = getDB() 
+        
+        cursor = db.cursor()
+
+        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+
+        userExists = cursor.fetchone()
+
+        if userExists is not None:
+            db.close()
+            session['username'] = username
+            session['logged_in'] = True
+            print(session)
+            return render_template('index.html')
+
+        cursor.execute("SELECT * FROM USERS where username = \" %s \";", (username))
+
+        userExistsWrongPwd = cursor.fetchone()
+        db.close()
+        
+        if userExistsWrongPwd is not None:
+            return jsonify({'result':'user ' + username + ' exists, but the password is wrong.', 'fail': "Wrong password"})
+        else:
+            return jsonify({'result':'user ' + username + ' does not exist! Please SIGNUP'})
+    except:
+        return jsonify({'result':'error ' + sys.exc_info()[0] + " occured"})
+
+@app.route('/logout', methods=["POST"])
+def logout():
+    # remove the username from the session if it's there
+    session.pop(session['username'], None)
+    session['logged_in'] = False
+    return render_template('index.html')
