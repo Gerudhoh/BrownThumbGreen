@@ -2,3 +2,23 @@ body {
     background-color: #fecfff;
 }
 
+@font-face {
+    font-family: 'Plantletters'; /*a name to be used later*/
+    src: url('Plantsletters.ttf');
+}
+
+
+.websiteTitle {
+    font-size: xx-large;
+    color: #6fbd72;
+    font-family: 'Plantletters';
+}
+
+.imageCol {
+    white-space: nowrap;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0 auto;
+  }
+
