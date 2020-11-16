@@ -19,9 +19,9 @@ app.config.update(
 
 @app.route('/')
 def index(name=None):
-    session['username'] = "username"
-    session['logged_in'] = True
-    session['userID'] = 1
+    # session['username'] = "username"
+    # session['logged_in'] = False
+    # session['userID'] = 1
     if 'username' in session:
         return render_template('index.html', name=name)
     return render_template('index.html', name=name)
@@ -73,7 +73,7 @@ def getUser():
         
         cursor = db.cursor()
 
-        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+        cursor.execute("SELECT * FROM USERS where username =  %s  AND password= %s ;", (username, password))
 
         myresult = cursor.fetchone()
 
@@ -99,14 +99,14 @@ def updateUser():
         cursor = db.cursor()
 
         myQuery = "UPDATE USERS "
-        myQuery += "SET username=\" %s \", password=\" %s \" "
-        myQuery += "WHERE username=\" %s \";"
+        myQuery += "SET username= %s , password= %s  "
+        myQuery += "WHERE username= %s ;"
 
         print(myQuery)
 
         cursor.execute(myQuery, (username, password, username))
         
-        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+        cursor.execute("SELECT * FROM USERS where username =  %s  AND password= %s ;", (username, password))
 
         myresult = cursor.fetchone()
 
@@ -133,8 +133,8 @@ def deleteUser():
     
         cursor = db.cursor()
 
-        cursor.execute("DELETE FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
-        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+        cursor.execute("DELETE FROM USERS where username =  %s  AND password= %s ;", (username, password))
+        cursor.execute("SELECT * FROM USERS where username =  %s  AND password= %s ;", (username, password))
 
         myresult = cursor.fetchone()
 
@@ -160,7 +160,7 @@ def createUser():
         
         cursor = db.cursor()
 
-        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+        cursor.execute("SELECT * FROM USERS where username =  %s  AND password= %s ;", (username, password))
 
         myresult = cursor.fetchone()
 
@@ -168,7 +168,7 @@ def createUser():
             db.close()
             return jsonify({'result':'user ' + username + ' already in the database'})
         
-        myQuery = "insert into USERS values (null, \" %s \"," + "\" %s \")"
+        myQuery = "insert into USERS values (null,  %s ," + " %s )"
         cursor.execute(myQuery, (username, password))
         
         db.commit()
@@ -238,7 +238,7 @@ def login():
         
         cursor = db.cursor()
 
-        cursor.execute("SELECT * FROM USERS where username = \" %s \" AND password=\" %s \";", (username, password))
+        cursor.execute("SELECT * FROM USERS where username = %s AND password= %s;", (username, password))
 
         userExists = cursor.fetchone()
 
@@ -249,9 +249,9 @@ def login():
             session['logged_in'] = True
             session['userID'] = userID
             print(session)
-            return render_template('index.html')
+            return jsonify({'result': "successfully logged in!"})
 
-        cursor.execute("SELECT * FROM USERS where username = \" %s \";", (username,))
+        cursor.execute("SELECT * FROM USERS where username = %s;", (username))
 
         userExistsWrongPwd = cursor.fetchone()
         db.close()

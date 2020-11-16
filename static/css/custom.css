@@ -15,10 +15,14 @@ body {
 }
 
 .imageCol {
-    white-space: nowrap;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin: 0 auto;
+    object-fit: contain;
+    max-width: 20vw;
+    max-height: 20vh;
   }
+
+  .autoResizeImage {
+    max-height: 50%;
+    max-width: 50%;
+    display:block;
+}
 

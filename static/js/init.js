@@ -39,7 +39,7 @@ $(document).ready(function () {
         $('#myPlants').click(function () {
           $('#plantsTable').hide();
           if($('#myPlants').text() === "Show My Plants"){
-            $('#myPlants').text("Loading...");
+            $('#myPlants').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...');
             $('#search').hide();
             getUserPlants();
           } else {
@@ -51,6 +51,8 @@ $(document).ready(function () {
         });
 
         $('#plantSearch').click(function () {
+          console.log("search");
+          $('#plantSearch').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Searching');
           plantsSearch();
       });
 });
@@ -77,6 +79,7 @@ async function plantsSearch() {
     });
   const result = JSON.parse(rawData);
   populateTable(result.data);
+  $('#plantSearch').text("Search");
   return result;
 }
 
@@ -188,6 +191,8 @@ function savePlant(plantId){
     url: '/savePlant',   //The server endpoint we are connecting to
     success: function(result){
       console.log(result.result);
+      let buttonId = '#add' + plantId;
+      $(buttonId).html('Added <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/></svg>');
   }});
 }
 
@@ -197,15 +202,15 @@ function savePlant(plantId){
  */
 function populateTable(plants) {  
   $('#plantsTable').show();
-  $('#plantsTable').html('<tr style="text-align: center;" class="d-flex"><th width="25%">Picture</th><th>Common Name</th><th>Scientific Name</th> </tr>');
+  $('#plantsTable').html('<tr><th width="25%">Picture</th><th th width="20%" class="p3">Common Name</th><th>Scientific Name</th><th>Add Plant</th> </tr>');
   for(let i = 0, f; f = plants[i]; i++) {
     let row = "";
     let plant = plants[i];
-    row += '<tr class="d-flex">';
+    row += '<tr>';
     // image
-    row += '<td class="imageCol">';
+    row += '<td>';
     if(plant.image_url != null) {
-      row += '<img src=' + plant.image_url + ' style="display:block;vertical-align: bottom;" width="20%" height="20%"">';
+      row += '<img src=' + plant.image_url + ' class="autoResizeImage">';
     } else {
       row += "Unavailable"
     }
@@ -220,7 +225,7 @@ function populateTable(plants) {
     row += '</td>';
     // Save button
     row += '<td>';
-    row += '<button type="button" class="btn btn-success btn-circle btn-sm" onclick=savePlant('+ plant.id +')>Save</button>';
+    row += '<button type="button" id="add'+ plant.id +'" class="btn btn-success btn-circle btn-lg" onclick=savePlant('+ plant.id +')>Add</button>';
     row += '</td>';
     
     row += '</tr>';
@@ -234,16 +239,16 @@ function populateTable(plants) {
  */
 function populateTableForUser(plants) {  
   $('#plantsTable').show();
-  $('#plantsTable').html('<tr style="text-align: center;"><th width="25%">Pic</th><th>Common Name</th><th>Scientific Name</th><th>Light</th><th>Edible</th><th>Toxicity</th><th>Avg. Height</th><th>Growth Rate</th></tr>');
+  $('#plantsTable').html('<tr><th width="25%">Pic</th><th width="12%">Common Name</th><th width="10%">Scientific Name</th><th width="8%">Light</th><th width="8%">Edible</th><th width="12%">Toxicity</th><th width="10%">Avg. Height</th><th width="10%">Growth Rate</th></tr>');
   for(let i = 0, f; f = plants[i]; i++) {
     let row = "";
     console.log(plants[i].data);
     let plant = plants[i].data;
     row += '<tr>';
     // image
-    row += '<td class="imageCol">';
+    row += '<td>';
     if(plant.image_url != null) {
-      row += '<img src=' + plant.image_url + ' style="display:block;vertical-align: bottom;" width="20%" height="20%"">';
+      row += '<img src=' + plant.image_url + ' class="autoResizeImage">';
     } else {
       row += "Unavailable"
     }
