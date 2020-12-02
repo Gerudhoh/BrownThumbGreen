@@ -8,12 +8,12 @@ import MySQLdb
 import MySQLdb.cursors
 import requests
 
-token = "mkuPQP5rVg7AKp5bgwdJ0qn-nsoQgXY4r8HRLksHw-4"
+token = "REDACTED"
 
 app = Flask(__name__, static_url_path='')
 app.config.update(
     DEBUG=True,
-    SECRET_KEY=b'h1^b3stpxy_h@9f',
+    SECRET_KEY=REDACTED,
     TEMPLATE_AUTO_RELOAD=True
 )
 
@@ -30,7 +30,7 @@ def getDB():
     db = MySQLdb.connect(
             host="dursley.socs.uoguelph.ca", 
             user="hohenade", 
-            passwd="1006930",
+            passwd="REDACTED",
             db="hohenade")
     return db
 
